@@ -195,17 +195,26 @@ $token = base64_encode(hash_hmac('sha256', $hash_str . $merchant_salt, $merchant
 </body>
 
 <script>
-    function validateName(input) {
-        const name = input.value.trim();
-        const errorElement = document.getElementById('nameError');
-        if (name === '') {
-            errorElement.textContent = 'Kart sahibinin adı gereklidir.';
-            return false;
-        } else {
-            errorElement.textContent = '';
-            return true;
-        }
+function validateName(input) {
+    const name = input.value.trim(); // Trim to remove leading and trailing spaces
+    const errorElement = document.getElementById('nameError');
+    
+    if (name === '') {
+        errorElement.textContent = 'Kart sahibinin adı gereklidir.';
+        input.setCustomValidity('Kart sahibinin adı gereklidir.');
+        return false;
+    } else if (!name.replace(/\s/g, '').length) {
+        errorElement.textContent = 'Kart sahibinin adı sadece boş karakterden oluşamaz.';
+        input.setCustomValidity('Kart sahibinin adı sadece boş karakterden oluşamaz.');
+        return false;
+    } else {
+        errorElement.textContent = '';
+        input.setCustomValidity('');
+        return true;
     }
+}
+
+
 
     function validateCardNumber(input) {
         const cardNumber = input.value.replace(/\s+/g, '');
