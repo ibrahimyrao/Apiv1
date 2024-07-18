@@ -67,8 +67,8 @@ $installment_count = "0";
 
 $post_url = "https://www.paytr.com/odeme";
 
-$hash_str = $merchant_id . $user_ip . $merchant_oid . $email . $payment_amount . $payment_type . $installment_count. $currency. $test_mode. $non_3d;
-$token = base64_encode(hash_hmac('sha256',$hash_str.$merchant_salt,$merchant_key,true));
+$hash_str = $merchant_id . $user_ip . $merchant_oid . $email . $payment_amount . $payment_type . $installment_count . $currency . $test_mode . $non_3d;
+$token = base64_encode(hash_hmac('sha256', $hash_str . $merchant_salt, $merchant_key, true));
 ?>
 
 <body>
@@ -133,11 +133,12 @@ $token = base64_encode(hash_hmac('sha256',$hash_str.$merchant_salt,$merchant_key
                                                     const endYear = startYear + 20;
                                                     for (let year = startYear; year <= endYear; year++) {
                                                         const yearStr = year.toString().slice(-2);
-                                                        document.write(`<option value="${yearStr}">${yearStr}</option>`);
+                                                        document.write('<option value="' + yearStr + '">' + yearStr + '</option>');
                                                     }
                                                 </script>
                                             </select>
                                         </div>
+                                        <small id="expiryError" class="text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -178,7 +179,7 @@ $token = base64_encode(hash_hmac('sha256',$hash_str.$merchant_salt,$merchant_key
                             <input type="hidden" name="client_lang" value="<?php echo $client_lang; ?>">
                             <input type="hidden" name="paytr_token" value="<?php echo $token; ?>">
                             <input type="hidden" name="non3d_test_failed" value="<?php echo $non3d_test_failed; ?>">
-                            <input type="text" name="installment_count" value="<?php echo $installment_count; ?>">
+                            <input type="hidden" name="installment_count" value="<?php echo $installment_count; ?>">
                             <input type="hidden" name="card_type" value="<?php echo $card_type; ?>">
                             <div class="card-footer">
                                 <button type="submit" class="subscribe btn btn-info btn-block shadow-sm">
@@ -234,16 +235,14 @@ $token = base64_encode(hash_hmac('sha256',$hash_str.$merchant_salt,$merchant_key
         return (sum % 10) === 0;
     }
 
-
-
     function validateNumber(input) {
         const number = input.value.replace(/\D/g, '');
         input.value = number;
     }
+
     function validateCVV(input) {
         input.value = input.value.replace(/\D/g, '');
     }
-
 
     function toggleCVVVisibility() {
         const cvvInput = document.getElementById('cvv');
@@ -258,6 +257,38 @@ $token = base64_encode(hash_hmac('sha256',$hash_str.$merchant_salt,$merchant_key
             toggleIcon.classList.add('fa-eye');
         }
     }
+
+    function validateExpiryDate() {
+        const month = document.getElementById('expiry_month').value;
+        const year = document.getElementById('expiry_year').value;
+        const errorElement = document.getElementById('expiryError');
+
+        if (month === '' || year === '') {
+            errorElement.textContent = 'Son kullanma tarihi gereklidir.';
+            return false;
+        }
+
+        const expiryDate = new Date(`20${year}-${month}-01`);
+        const currentDate = new Date();
+        currentDate.setDate(1); // Only compare month and year
+
+        if (expiryDate < currentDate) {
+            errorElement.textContent = 'Son kullanma tarihi geçersiz.';
+            return false;
+        } else {
+            errorElement.textContent = '';
+            return true;
+        }
+    }
+
+    document.getElementById('expiry_month').addEventListener('change', validateExpiryDate);
+    document.getElementById('expiry_year').addEventListener('change', validateExpiryDate);
+
+    document.getElementById('paymentForm').addEventListener('submit', function (event) {
+        if (!validateExpiryDate()) {
+            event.preventDefault();
+        }
+    });
 </script>
 
 </html>
