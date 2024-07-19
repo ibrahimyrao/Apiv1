@@ -142,79 +142,76 @@ $token = base64_encode(hash_hmac('sha256', $hash_str . $merchant_salt, $merchant
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="form-group mb-4">
-                                        <label data-toggle="tooltip"
-                                            title="Kartınızın arka yüzünde 3 rakam şeklinde bulunan güvenlik kodu.">
-                                            <h6>CVV <i class="fa fa-question-circle d-inline"></i></h6>
-                                        </label>
-                                        <div class="input-group">
-                                            <input type="password" name="cvv" maxlength="3" class="form-control"
-                                                id="cvv" oninput="validateCVV(this)" required>
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" onclick="toggleCVVVisibility()">
-                                                    <i class="fa fa-eye" id="toggleCVVIcon"></i>
-                                                </span>
-                                            </div>
+                                    <label data-toggle="tooltip"
+                                        title="Kartınızın arka yüzünde 3 rakam şeklinde bulunan güvenlik kodu.">
+                                        <h6>CVV <i class="fa fa-question-circle d-inline"></i></h6>
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="password" name="cvv" maxlength="3" class="form-control" id="cvv"
+                                            oninput="validateCVV(this)" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" onclick="toggleCVVVisibility()">
+                                                <i class="fa fa-eye" id="toggleCVVIcon"></i>
+                                            </span>
                                         </div>
-                                        <small id="cvvError" class="text-danger"></small>
                                     </div>
+                                    <small id="cvvError" class="text-danger"></small>
                                 </div>
                             </div>
-                            <input type="hidden" name="merchant_id" value="<?php echo $merchant_id; ?>">
-                            <input type="hidden" name="user_ip" value="<?php echo $user_ip; ?>">
-                            <input type="hidden" name="merchant_oid" value="<?php echo $merchant_oid; ?>">
-                            <input type="hidden" name="email" value="<?php echo $email; ?>">
-                            <input type="hidden" name="payment_type" value="<?php echo $payment_type; ?>">
-                            <input type="hidden" name="payment_amount" value="<?php echo $payment_amount; ?>">
-                            <input type="hidden" name="currency" value="<?php echo $currency; ?>">
-                            <input type="hidden" name="test_mode" value="<?php echo $test_mode; ?>">
-                            <input type="hidden" name="non_3d" value="<?php echo $non_3d; ?>">
-                            <input type="hidden" name="merchant_ok_url" value="<?php echo $merchant_ok_url; ?>">
-                            <input type="hidden" name="merchant_fail_url" value="<?php echo $merchant_fail_url; ?>">
-                            <input type="hidden" name="user_name" value="Paytr Test">
-                            <input type="hidden" name="user_address" value="test test test">
-                            <input type="hidden" name="user_phone" value="05555555555">
-                            <input type="hidden" name="user_basket" value="<?php echo $user_basket; ?>">
-                            <input type="hidden" name="debug_on" value="1">
-                            <input type="hidden" name="client_lang" value="<?php echo $client_lang; ?>">
-                            <input type="hidden" name="paytr_token" value="<?php echo $token; ?>">
-                            <input type="hidden" name="non3d_test_failed" value="<?php echo $non3d_test_failed; ?>">
-                            <input type="hidden" name="installment_count" value="<?php echo $installment_count; ?>">
-                            <input type="hidden" name="card_type" value="<?php echo $card_type; ?>">
-                            <div class="card-footer">
-                                <button type="submit" class="subscribe btn btn-info btn-block shadow-sm">
-                                    Ödemeyi Tamamla
-                                </button>
-                            </div>
-                        </form>
                     </div>
+                    <input type="hidden" name="merchant_id" value="<?php echo $merchant_id; ?>">
+                    <input type="hidden" name="user_ip" value="<?php echo $user_ip; ?>">
+                    <input type="hidden" name="merchant_oid" value="<?php echo $merchant_oid; ?>">
+                    <input type="hidden" name="email" value="<?php echo $email; ?>">
+                    <input type="hidden" name="payment_type" value="<?php echo $payment_type; ?>">
+                    <input type="hidden" name="payment_amount" value="<?php echo $payment_amount; ?>">
+                    <input type="hidden" name="currency" value="<?php echo $currency; ?>">
+                    <input type="hidden" name="test_mode" value="<?php echo $test_mode; ?>">
+                    <input type="hidden" name="non_3d" value="<?php echo $non_3d; ?>">
+                    <input type="hidden" name="merchant_ok_url" value="<?php echo $merchant_ok_url; ?>">
+                    <input type="hidden" name="merchant_fail_url" value="<?php echo $merchant_fail_url; ?>">
+                    <input type="hidden" name="user_name" value="Paytr Test">
+                    <input type="hidden" name="user_address" value="test test test">
+                    <input type="hidden" name="user_phone" value="05555555555">
+                    <input type="hidden" name="user_basket" value="<?php echo $user_basket; ?>">
+                    <input type="hidden" name="debug_on" value="1">
+                    <input type="hidden" name="client_lang" value="<?php echo $client_lang; ?>">
+                    <input type="hidden" name="paytr_token" value="<?php echo $token; ?>">
+                    <input type="hidden" name="non3d_test_failed" value="<?php echo $non3d_test_failed; ?>">
+                    <input type="hidden" name="installment_count" value="<?php echo $installment_count; ?>">
+                    <input type="hidden" name="card_type" value="<?php echo $card_type; ?>">
+                    <div class="card-footer">
+                        <button type="submit" class="subscribe btn btn-info btn-block shadow-sm">
+                            Ödemeyi Tamamla
+                        </button>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+    </div>
 </body>
 
 <script>
-function validateName(input) {
-    const name = input.value.trim(); // Trim to remove leading and trailing spaces
-    const errorElement = document.getElementById('nameError');
-    
-    if (name === '') {
-        errorElement.textContent = 'Kart sahibinin adı gereklidir.';
-        input.setCustomValidity('Kart sahibinin adı gereklidir.');
-        return false;
-    } else if (!name.replace(/\s/g, '').length) {
-        errorElement.textContent = 'Kart sahibinin adı sadece boş karakterden oluşamaz.';
-        input.setCustomValidity('Kart sahibinin adı sadece boş karakterden oluşamaz.');
-        return false;
-    } else {
-        errorElement.textContent = '';
-        input.setCustomValidity('');
-        return true;
+    function validateName(input) {
+        const name = input.value.trim(); // Trim to remove leading and trailing spaces
+        const errorElement = document.getElementById('nameError');
+
+        if (name === '') {
+            errorElement.textContent = 'Kart sahibinin adı gereklidir.';
+            input.setCustomValidity('Kart sahibinin adı gereklidir.');
+            return false;
+        } else if (!name.replace(/\s/g, '').length) {
+            errorElement.textContent = 'Kart sahibinin adı sadece boş karakterden oluşamaz.';
+            input.setCustomValidity('Kart sahibinin adı sadece boş karakterden oluşamaz.');
+            return false;
+        } else {
+            errorElement.textContent = '';
+            input.setCustomValidity('');
+            return true;
+        }
     }
-}
-
-
 
     function validateCardNumber(input) {
         const cardNumber = input.value.replace(/\s+/g, '');
@@ -250,8 +247,19 @@ function validateName(input) {
     }
 
     function validateCVV(input) {
-        input.value = input.value.replace(/\D/g, '');
+        input.value = input.value.replace(/\D/g, ''); // Remove non-numeric characters
+        const cvv = input.value.trim();
+        const errorElement = document.getElementById('cvvError');
+
+        if (cvv.length !== 3) {
+            errorElement.textContent = 'CVV 3 rakam olmalıdır.';
+            input.setCustomValidity('CVV 3 rakam olmalıdır.');
+        } else {
+            errorElement.textContent = '';
+            input.setCustomValidity('');
+        }
     }
+
 
     function toggleCVVVisibility() {
         const cvvInput = document.getElementById('cvv');
