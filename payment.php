@@ -13,62 +13,62 @@
 </head>
 
 <?php
-$merchant_id = '471561';
-$merchant_key = 'QecQuDdJ251JLQH3';
-$merchant_salt = 'Xcc1LLUpKsB8J7ze';
+$merchant_id = 
+$merchant_key = 
+$merchant_salt = 
 
-$merchant_ok_url = "http://localhost/Yeni%20klas%C3%B6r/basarili";
-$merchant_fail_url = "http://localhost/Yeni%20klas%C3%B6r/basarisiz";
+$merchant_ok_url="http://site-ismi/basarili";
+$merchant_fail_url="http://site-ismi/basarisiz";
 
-$user_basket = htmlentities(
-    json_encode(
-        array(
-            array("Altis Renkli Deniz Yatağı - Mavi", "18.00", 1),
-            array("Pharmasol Güneş Kremi 50+ Yetişkin & Bepanthol Cilt Bakım Kremi", "33,25", 2),
-            array("Bestway Çocuklar İçin Plaj Seti Beach Set ÇANTADA DENİZ TOPU-BOT-KOLLUK", "45,42", 1)
-        )
-    )
-);
+$user_basket = htmlentities(json_encode(array(
+    array("Altis Renkli Deniz Yatağı - Mavi", "18.00", 1),
+    array("Pharmasol Güneş Kremi 50+ Yetişkin & Bepanthol Cilt Bakım Kremi", "33,25", 2),
+    array("Bestway Çocuklar İçin Plaj Seti Beach Set ÇANTADA DENİZ TOPU-BOT-KOLLUK", "45,42", 1)
+)));
 
 srand(time());
 $merchant_oid = rand();
 
-$test_mode = "0";
+$test_mode="0";
 
 //3d'siz işlem
-$non_3d = "0";
+$non_3d="0";
 
 //Ödeme süreci dil seçeneği tr veya en
 $client_lang = "tr";
 
 //non3d işlemde, başarısız işlemi test etmek için 1 gönderilir (test_mode ve non_3d değerleri 1 ise dikkate alınır!)
-$non3d_test_failed = "0";
+$non3d_test_failed="0";
 
-if (isset($_SERVER["HTTP_CLIENT_IP"])) {
+if( isset( $_SERVER["HTTP_CLIENT_IP"] ) ) {
     $ip = $_SERVER["HTTP_CLIENT_IP"];
-} elseif (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
+} elseif( isset( $_SERVER["HTTP_X_FORWARDED_FOR"] ) ) {
     $ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
 } else {
     $ip = $_SERVER["REMOTE_ADDR"];
 }
 
-$user_ip = "192.168.1.13";
+$user_ip = $ip;
 
 $email = "testnon3d@paytr.com";
 
 // 100.99 TL ödeme
-$payment_amount = "100.99";
-$currency = "TL";
+$payment_amount = "100";
+$currency="TL";
 //
 $payment_type = "card";
 
 $card_type = "bonus";       // Alabileceği değerler; advantage, axess, combo, bonus, cardfinans, maximum, paraf, world, saglamkart
-$installment_count = "0";
+$installment_count = "5";
+
+$lang = "tr";
+$no_installment = "1";
+$max_installment = "0";
 
 $post_url = "https://www.paytr.com/odeme";
 
-$hash_str = $merchant_id . $user_ip . $merchant_oid . $email . $payment_amount . $payment_type . $installment_count . $currency . $test_mode . $non_3d;
-$token = base64_encode(hash_hmac('sha256', $hash_str . $merchant_salt, $merchant_key, true));
+$hash_str = $merchant_id . $user_ip . $merchant_oid . $email . $payment_amount . $payment_type . $installment_count . $currency . $test_mode . $non_3d . $no_installment . $max_installment;
+$token = base64_encode(hash_hmac('sha256',$hash_str . $merchant_salt,$merchant_key,true));
 ?>
 
 <body>
@@ -178,8 +178,12 @@ $token = base64_encode(hash_hmac('sha256', $hash_str . $merchant_salt, $merchant
                     <input type="hidden" name="client_lang" value="<?php echo $client_lang; ?>">
                     <input type="hidden" name="paytr_token" value="<?php echo $token; ?>">
                     <input type="hidden" name="non3d_test_failed" value="<?php echo $non3d_test_failed; ?>">
+                    <input type="hidden" name="non3d" value="<?php echo $non_3d?>">
                     <input type="hidden" name="installment_count" value="<?php echo $installment_count; ?>">
                     <input type="hidden" name="card_type" value="<?php echo $card_type; ?>">
+                    <input type="hidden" name="no_installment" value="<?php echo $no_installment; ?>">
+                    <input type="hidden" name="max_installment" value="<?php echo $max_installment; ?>">
+                    <input type="hidden" name="lang" value="<?php echo $lang; ?>">
                     <div class="card-footer">
                         <button type="submit" class="subscribe btn btn-info btn-block shadow-sm">
                             Ödemeyi Tamamla
