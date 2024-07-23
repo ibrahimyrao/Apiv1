@@ -20,16 +20,18 @@ $merchant_salt = '';
 $merchant_ok_url = "http://localhost/Yeni%20klas%C3%B6r/basarili";
 $merchant_fail_url = "http://localhost/Yeni%20klas%C3%B6r/basarisiz";
 
-$user_basket = htmlentities(json_encode(
-    array(
-        array("Altis Renkli Deniz Yatagi - Mavi", "18.00", 1),
-        array("Pharmasol Gunes Kremi 50+ Yetiskin & Bepanthol Cilt Bakim Kremi", "33,25", 2),
-        array("Bestway Cocuklar Icin Plaj Seti Beach Set CANTADA DENIZ TOPU-BOT-KOLLUK", "45,42", 1)
+$user_basket = htmlentities(
+    json_encode(
+        array(
+            array("Altis Renkli Deniz Yatagi - Mavi", "18.00", 1),
+            array("Pharmasol Gunes Kremi 50+ Yetiskin & Bepanthol Cilt Bakim Kremi", "33,25", 2),
+            array("Bestway Cocuklar Icin Plaj Seti Beach Set CANTADA DENIZ TOPU-BOT-KOLLUK", "45,42", 1)
+        )
     )
-));
+);
 
 $str = '1234567890ABCDEFGHIJKLMNOPUQRSTUVWXYZ';
-$merchant_oid = substr(str_shuffle($str), 0, 10);
+$merchant_oid = substr(str_shuffle($str), 0, 64);
 
 $test_mode = "0";
 
@@ -50,7 +52,7 @@ if (isset($_SERVER["HTTP_CLIENT_IP"])) {
     $ip = $_SERVER["REMOTE_ADDR"];
 }
 
-$user_ip = "192.168.1.13";
+$user_ip = "";
 
 $email = "testnon3d@paytr.com";
 
@@ -60,17 +62,18 @@ $currency = "TL";
 //
 $payment_type = "card";
 
-$card_type = "bonus";       // Alabileceği değerler; advantage, axess, combo, bonus, cardfinans, maximum, paraf, world, saglamkart
+$card_type = "";       // Alabileceği değerler; advantage, axess, combo, bonus, cardfinans, maximum, paraf, world, saglamkart
 $installment_count = "0";
 
 $lang = "tr";
 $no_installment = "1";
-$max_installment = "0";
+$max_installment = "3";
 
 $post_url = "https://www.paytr.com/odeme";
 
-$hash_str = $merchant_id . $user_ip . $merchant_oid . $email . $payment_amount . $payment_type . $installment_count . $currency . $test_mode . $non_3d;
-$token = base64_encode(hash_hmac('sha256', $hash_str . $merchant_salt, $merchant_key, true));
+$hash_str = $merchant_id.$user_ip.$merchant_oid.$email.$payment_amount.$payment_type.$installment_count.$currency.$test_mode.$non_3d;
+$token = base64_encode(hash_hmac('sha256', $hash_str.$merchant_salt, $merchant_key, true));
+
 ?>
 
 <body>
@@ -145,7 +148,7 @@ $token = base64_encode(hash_hmac('sha256', $hash_str . $merchant_salt, $merchant
                                 </div>
                                 <div class="col-sm-4">
                                     <label data-toggle="tooltip"
-                                        title="Kartınızın arka yüzünde 3 rakam şeklinde bulunan güvenlik kodu.">
+                                        title="Kartınızın arka tarafında 3 rakam şeklinde bulunan güvenlik kodu.">
                                         <h6>CVV <i class="fa fa-question-circle d-inline"></i></h6>
                                     </label>
                                     <div class="input-group">
@@ -247,10 +250,6 @@ $token = base64_encode(hash_hmac('sha256', $hash_str . $merchant_salt, $merchant
         return (sum % 10) === 0;
     }
 
-    function validateNumber(input) {
-        const number = input.value.replace(/\D/g, '');
-        input.value = number;
-    }
 
     function validateCVV(input) {
         input.value = input.value.replace(/\D/g, ''); // Remove non-numeric characters
